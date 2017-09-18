@@ -2,7 +2,6 @@ package net.Schlaubi.KuhBlungBot.commands;
 
 import net.Schlaubi.KuhBlungBot.util.EmbedSender;
 import net.Schlaubi.KuhBlungBot.util.STATIC;
-import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.managers.GuildController;

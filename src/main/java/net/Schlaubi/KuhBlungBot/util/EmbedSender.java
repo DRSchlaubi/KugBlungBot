@@ -22,4 +22,10 @@ public class EmbedSender {
         }, 5000);
 
     }
+    public static void sendPermanentEmbed(String contnent, MessageChannel channel, Color color){
+        EmbedBuilder embed = new EmbedBuilder().setDescription(contnent).setColor(color);
+        channel.sendMessage(embed.build()).queue();
+
+
+    }
 }

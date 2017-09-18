@@ -1,7 +1,12 @@
 package net.Schlaubi.KuhBlungBot.core;
 
 import net.Schlaubi.KuhBlungBot.commands.CommandGame;
+import net.Schlaubi.KuhBlungBot.commands.commandCookie;
+import net.Schlaubi.KuhBlungBot.commands.commandProfile;
+import net.Schlaubi.KuhBlungBot.commands.commandTextbox;
 import net.Schlaubi.KuhBlungBot.listeners.CommandListener;
+import net.Schlaubi.KuhBlungBot.listeners.GuildMemberJoinListener;
+import net.Schlaubi.KuhBlungBot.listeners.levellistener;
 import net.Schlaubi.KuhBlungBot.util.SECRETS;
 import net.Schlaubi.KuhBlungBot.util.STATIC;
 import net.dv8tion.jda.core.AccountType;
@@ -21,7 +26,12 @@ public class Main {
         builder.setStatus(OnlineStatus.DO_NOT_DISTURB);
         builder.setGame(Game.of(STATIC.GAME));
         builder.addEventListener(new CommandListener());
+        builder.addEventListener(new levellistener());
+        builder.addEventListener(new GuildMemberJoinListener());
         CommandHandler.commands.put("game", new CommandGame());
+        CommandHandler.commands.put("profile", new commandProfile());
+        CommandHandler.commands.put("textbox", new commandTextbox());
+        CommandHandler.commands.put("cookie", new commandCookie());
 
         try {
             builder.buildBlocking();
