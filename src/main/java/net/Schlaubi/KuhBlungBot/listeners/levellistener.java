@@ -24,7 +24,7 @@ public class levellistener extends ListenerAdapter {
         User author = event.getAuthor();
         if(!author.isBot()) {
 
-            if (!msg.startsWith("-") && !msg.startsWith(".") && !msg.startsWith("::") && !msg.startsWith("!!") && !cooldowned.contains(author.getId()) && ! author.getId().equals("264048760580079616")) {
+            if (!msg.startsWith("-") && !msg.startsWith(".") && !msg.startsWith("::") && !msg.startsWith("!!") && !cooldowned.contains(author.getId())) {
 
 
                 File profile = new File("PROFILES/" + author.getId() + "/profile.properties");

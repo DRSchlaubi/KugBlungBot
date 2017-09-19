@@ -1,9 +1,7 @@
 package net.Schlaubi.KuhBlungBot.core;
 
-import net.Schlaubi.KuhBlungBot.commands.CommandGame;
-import net.Schlaubi.KuhBlungBot.commands.commandCookie;
-import net.Schlaubi.KuhBlungBot.commands.commandProfile;
-import net.Schlaubi.KuhBlungBot.commands.commandTextbox;
+
+import net.Schlaubi.KuhBlungBot.commands.*;
 import net.Schlaubi.KuhBlungBot.listeners.CommandListener;
 import net.Schlaubi.KuhBlungBot.listeners.GuildMemberJoinListener;
 import net.Schlaubi.KuhBlungBot.listeners.levellistener;
@@ -32,6 +30,7 @@ public class Main {
         CommandHandler.commands.put("profile", new commandProfile());
         CommandHandler.commands.put("textbox", new commandTextbox());
         CommandHandler.commands.put("cookie", new commandCookie());
+        CommandHandler.commands.put("shop", new commandShop());
 
         try {
             builder.buildBlocking();

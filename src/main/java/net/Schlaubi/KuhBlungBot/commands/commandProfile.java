@@ -20,6 +20,7 @@ public class commandProfile implements Command {
     private String cookies;
     String level;
     private User user;
+    private String money;
 
     @Override
     public boolean called(String[] args, MessageReceivedEvent event) {
@@ -35,11 +36,11 @@ public class commandProfile implements Command {
         message.delete().queue();
 
 
-        if(!(message.getMentionedUsers().size() > 0)){
-            user = event.getAuthor();
+        if(message.getMentionedUsers().size() > 0){
+            user = message.getMentionedUsers().get(0);
             return;
         } else {
-            user = message.getMentionedUsers().get(0);
+            user = event.getAuthor();
         }
         File profile = new File("PROFILES/" + user.getId() + "/profile.properties");
         File path = new File("PROFILES/" + user.getId() + "/");
@@ -64,6 +65,7 @@ public class commandProfile implements Command {
             this.textbox = properties.getProperty("textbox");
             this.cookies = properties.getProperty("cookies");
             this.level = properties.getProperty("level");
+            this.money = properties.getProperty("money");
 
             if(points == null){
                 this.points = "0";
@@ -89,6 +91,11 @@ public class commandProfile implements Command {
                 properties.setProperty("level", "1");
                 properties.store(new FileOutputStream(profile), null);
             }
+            if(money == null){
+                this.money = "0";
+                properties.setProperty("money", "0");
+                properties.store(new FileOutputStream(profile), null);
+            }
 
             new Timer().schedule(new TimerTask() {
                 @Override
@@ -98,8 +105,9 @@ public class commandProfile implements Command {
                             .setColor(Color.cyan)
                             .setThumbnail(user.getAvatarUrl())
                             .setTitle("__**" + user.getName() + "'s**__ profile")
-                            .addField(":small_blue_diamond: Points:" , "`" + points + "`", true)
+                            .addField(":moneybag: Money: ", money, true)
                             .addField(":cookie: Cookies:", "`" + cookies + "`", true)
+                            .addField(":small_blue_diamond: Points:" , "`" + points + "`", true)
                             .addField(":large_blue_diamond: Level", "`" + level + "`", true)
                             .addField(":large_blue_diamond: Next level", "`" + points + "/" + nextLevel * 100 * 2 +"`", true)
                             .addField(":pager: Textbox", textbox, false)
