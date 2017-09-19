@@ -91,7 +91,7 @@ public class commandShop implements Command {
 
             switch (args[0]){
                 case "exchange":
-                    if(args.length > 0){
+                    if(args.length > 1){
                         try{
                             exchange = Integer.parseInt(args[1]);
                             if(exchange > Integer.parseInt(cookies)){
@@ -107,7 +107,7 @@ public class commandShop implements Command {
                             EmbedSender.sendEmbed(":warning:: Please provide a valid number", channel, Color.red);
                         }
                     } else {
-                        EmbedSender.sendEmbed("Usage: `" + STATIC.PREFIX + "shop exchange <amount of cookies>", channel, Color.red);
+                        EmbedSender.sendEmbed("Usage: `" + STATIC.PREFIX + "shop exchange <amount of cookies>`", channel, Color.red);
                     }
 
                     break;
