@@ -16,6 +16,8 @@ public class levellistener extends ListenerAdapter {
     private String points;
     private ArrayList<String> cooldowned = new ArrayList<>();
     private String level;
+    private String money;
+    private String cookies;
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
@@ -48,6 +50,8 @@ public class levellistener extends ListenerAdapter {
                     properties.load(bis);
 
                     points = properties.getProperty("points");
+                    money = properties.getProperty("money");
+                    cookies = properties.getProperty("cookies");
 
                     if (points == null) {
                         this.points = "0";
@@ -60,12 +64,23 @@ public class levellistener extends ListenerAdapter {
                         properties.setProperty("level", "1");
                         properties.store(new FileOutputStream(profile), null);
                     }
+                    if (money == null) {
+                        this.money = "0";
+                        properties.setProperty("money", "0");
+                        properties.store(new FileOutputStream(profile), null);
+                    }
+                    if (cookies == null) {
+                        this.cookies = "0";
+                        properties.setProperty("cookies", "0");
+                        properties.store(new FileOutputStream(profile), null);
+                    }
+
 
                     Random gen = new Random();
                     int random = gen.nextInt(50);
-                    int pointsint = Integer.parseInt(points) + random;
+                    int moneyreward = Integer.parseInt(money) * random;
 
-                    properties.setProperty("points", String.valueOf(pointsint));
+                    properties.setProperty("points", String.valueOf(moneyreward));
 
 
                     properties.store(new FileOutputStream(profile), null);
@@ -77,20 +92,32 @@ public class levellistener extends ListenerAdapter {
                         @Override
                         public void run() {
                             int nextlevel = Integer.parseInt(level) + 1;
-                            int actuallevel = Integer.parseInt(level);
                             int actualpoints = Integer.parseInt(properties.getProperty("points"));
+                            Random gen = new Random();
+                            int random = gen.nextInt(50);
+                            int moneyreward = nextlevel * random;
+                            int cookiereward = nextlevel + random;
+                            properties.setProperty("money", String.valueOf(Integer.parseInt(money) + moneyreward));
+                            properties.setProperty("cookies", String.valueOf(Integer.parseInt(cookies) + cookiereward));
+                            try {
+                                properties.store(new FileOutputStream(profile), null);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                             PrivateChannel prich = author.openPrivateChannel().complete();
 
 
                             if(actualpoints >= nextlevel * 100 * 2){
                                 properties.setProperty("level", String.valueOf(nextlevel));
+
                                 try {
                                     properties.store(new FileOutputStream(profile), null);
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
 
-                                EmbedSender.sendPermanentEmbed("Congratulations you have spamed enough to get level `" + nextlevel + "` here's a cookie for you :cookie: ", prich, Color.cyan);
+                                EmbedSender.sendPermanentEmbed("Congratulations you have spamed enough to get level `" + nextlevel + "`  ", prich, Color.cyan);
+                                EmbedSender.sendPermanentEmbed("Rewards: \n :cookie: +" + cookiereward + " Cookies \n  :money_mouth: Money + " + moneyreward + " $", prich, Color.cyan);
                             }
 
                         }
