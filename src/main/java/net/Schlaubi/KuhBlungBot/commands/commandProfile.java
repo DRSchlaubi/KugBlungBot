@@ -38,10 +38,10 @@ public class commandProfile implements Command {
 
         if(message.getMentionedUsers().size() > 0){
             user = message.getMentionedUsers().get(0);
-            return;
         } else {
             user = event.getAuthor();
         }
+
         File profile = new File("PROFILES/" + user.getId() + "/profile.properties");
         File path = new File("PROFILES/" + user.getId() + "/");
 
@@ -110,7 +110,8 @@ public class commandProfile implements Command {
                             .addField(":small_blue_diamond: Points:" , "`" + points + "`", true)
                             .addField(":large_blue_diamond: Level", "`" + level + "`", true)
                             .addField(":large_blue_diamond: Next level", "`" + points + "/" + nextLevel * 100 * 2 +"`", true)
-                            .addField(":pager: Textbox", textbox, false)
+                            .addField(":pager: Status", textbox, false)
+                            .addField("Social Media: ", "SOON", false)
                             .addField(":computer:  Profile url:", "http://kuhblung.schlb.pw/" + author.getId() + " (soon)", false);
                     channel.sendMessage(embed.build()).queue();
                 }

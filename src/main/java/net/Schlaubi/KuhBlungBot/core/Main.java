@@ -28,7 +28,7 @@ public class Main {
         builder.addEventListener(new GuildMemberJoinListener());
         CommandHandler.commands.put("game", new CommandGame());
         CommandHandler.commands.put("profile", new commandProfile());
-        CommandHandler.commands.put("textbox", new commandTextbox());
+        CommandHandler.commands.put("status", new commandTextbox());
         CommandHandler.commands.put("cookie", new commandCookie());
         CommandHandler.commands.put("shop", new commandShop());
 

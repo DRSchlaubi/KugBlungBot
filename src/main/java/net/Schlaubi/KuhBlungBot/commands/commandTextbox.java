@@ -45,7 +45,7 @@ public class commandTextbox implements Command{
         }
 
         if(!(args.length > 0)){
-            EmbedSender.sendEmbed("Usage: `" + STATIC.PREFIX + "textbox <text>`", channel, Color.red);
+            EmbedSender.sendEmbed("Usage: `" + STATIC.PREFIX + "status <text>`", channel, Color.red);
             return;
         }
 

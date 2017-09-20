@@ -5,8 +5,10 @@ import net.Schlaubi.KuhBlungBot.util.STATIC;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
+import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.managers.GuildController;
 
 import java.awt.*;
 import java.io.*;
@@ -28,6 +30,7 @@ public class commandShop implements Command {
         User author = event.getAuthor();
         Message message = event.getMessage();
         MessageChannel channel = event.getChannel();
+        GuildController gcon = new GuildController(event.getGuild());
         channel.sendTyping().queue();
         message.delete().queue();
 
@@ -84,7 +87,8 @@ public class commandShop implements Command {
                         .addField(":moneybag: Money: ", money, true)
                         .addBlankField(true)
                         .addField("**Products: **", "", false)
-                        .addField(":money_with_wings: Money: ", "10 Cookies = 1 $ `" + STATIC.PREFIX + "shop exchange <amount of cookies>`", false);
+                        .addField(":money_with_wings: Money: ", "10 Cookies = 1 $ `" + STATIC.PREFIX + "shop exchange <amount of cookies>`", false)
+                        .addField("Pink color role: ",  "Price: 10$ `" + STATIC.PREFIX + "shop buy pinkcolor`", false);
                 channel.sendMessage(embed.build()).queue();
                 return;
             }
@@ -109,12 +113,38 @@ public class commandShop implements Command {
                     } else {
                         EmbedSender.sendEmbed("Usage: `" + STATIC.PREFIX + "shop exchange <amount of cookies>`", channel, Color.red);
                     }
-
+                    break;
+                case "buy":
+                    switch (args[1]){
+                        case "pinkcolor":
+                            if(Integer.parseInt(points) > 10){
+                                Role pinkcolor = event.getGuild().getRoleById("352157314926641152");
+                                if(!event.getMember().getRoles().contains(pinkcolor)) {
+                                    properties.setProperty("money", String.valueOf(Integer.parseInt(points) - 10));
+                                    properties.store(new FileOutputStream(profile), null);
+                                    gcon.addRolesToMember(event.getMember(), pinkcolor).queue();
+                                    EmbedSender.sendEmbed(":white_check_mark: You successfully bought `1x pink color (10$)`! Thank you!", channel, Color.green);
+                                } else {
+                                    EmbedSender.sendEmbed("You have already bought that product", channel, Color.red);
+                                }
+                            } else {
+                                EmbedSender.sendEmbed(":warning: You don't have enough money to buy this", channel, Color.red);
+                            }
+                            break;
+                        default:
+                            EmbedSender.sendEmbed(":warning: That product don't exsists", channel, Color.red);
+                            break;
+                    }
+                    break;
+                default:
+                    EmbedSender.sendEmbed(":warning: That command don't exsists", channel, Color.red);
                     break;
             }
+
         } catch (IOException e){
             e.printStackTrace();
         }
+
 
     }
 
