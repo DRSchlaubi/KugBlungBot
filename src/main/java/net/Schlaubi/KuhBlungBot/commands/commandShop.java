@@ -88,7 +88,13 @@ public class commandShop implements Command {
                         .addBlankField(true)
                         .addField("**Products: **", "", false)
                         .addField(":money_with_wings: Money: ", "10 Cookies = 1 $ `" + STATIC.PREFIX + "shop exchange <amount of cookies>`", false)
-                        .addField("Pink color role: ",  "Price: 10$ `" + STATIC.PREFIX + "shop buy pinkcolor`", false);
+                        .addField("Pink color role: ",  "Price: 10$ `" + STATIC.PREFIX + "shop buy pinkcolor`", false)
+                        .addField("Stammspieler role: ",  "Price: 20$ `" + STATIC.PREFIX + "shop buy stammspieler`", false)
+                        .addField("OG: ",  "Price: 50$ `" + STATIC.PREFIX + "shop buy og`", false);
+
+
+
+
                 channel.sendMessage(embed.build()).queue();
                 return;
             }
@@ -117,13 +123,43 @@ public class commandShop implements Command {
                 case "buy":
                     switch (args[1]){
                         case "pinkcolor":
-                            if(Integer.parseInt(points) > 10){
+                            if(Integer.parseInt(points) >= 10){
                                 Role pinkcolor = event.getGuild().getRoleById("352157314926641152");
                                 if(!event.getMember().getRoles().contains(pinkcolor)) {
                                     properties.setProperty("money", String.valueOf(Integer.parseInt(points) - 10));
                                     properties.store(new FileOutputStream(profile), null);
                                     gcon.addRolesToMember(event.getMember(), pinkcolor).queue();
                                     EmbedSender.sendEmbed(":white_check_mark: You successfully bought `1x pink color (10$)`! Thank you!", channel, Color.green);
+                                } else {
+                                    EmbedSender.sendEmbed("You have already bought that product", channel, Color.red);
+                                }
+                            } else {
+                                EmbedSender.sendEmbed(":warning: You don't have enough money to buy this", channel, Color.red);
+                            }
+                            break;
+                        case "stammspieler":
+                            if(Integer.parseInt(points) >= 20){
+                                Role stammspieler = event.getGuild().getRoleById("352830292777762816");
+                                if(!event.getMember().getRoles().contains(stammspieler)) {
+                                    properties.setProperty("money", String.valueOf(Integer.parseInt(points) - 20));
+                                    properties.store(new FileOutputStream(profile), null);
+                                    gcon.addRolesToMember(event.getMember(), stammspieler).queue();
+                                    EmbedSender.sendEmbed(":white_check_mark: You successfully bought `1x stammspieler (20$)`! Thank you!", channel, Color.green);
+                                } else {
+                                    EmbedSender.sendEmbed("You have already bought that product", channel, Color.red);
+                                }
+                            } else {
+                                EmbedSender.sendEmbed(":warning: You don't have enough money to buy this", channel, Color.red);
+                            }
+                            break;
+                        case "og":
+                            if(Integer.parseInt(points) >= 50){
+                                Role og = event.getGuild().getRoleById("356117876761034752");
+                                if(!event.getMember().getRoles().contains(og)) {
+                                    properties.setProperty("money", String.valueOf(Integer.parseInt(points) - 50));
+                                    properties.store(new FileOutputStream(profile), null);
+                                    gcon.addRolesToMember(event.getMember(), og).queue();
+                                    EmbedSender.sendEmbed(":white_check_mark: You successfully bought `1x OG role (20$)`! Thank you!", channel, Color.green);
                                 } else {
                                     EmbedSender.sendEmbed("You have already bought that product", channel, Color.red);
                                 }
