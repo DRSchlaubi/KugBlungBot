@@ -14,10 +14,6 @@ import net.dv8tion.jda.core.managers.GuildController;
 import java.awt.*;
 
 public class commandShop implements Command {
-    private String points;
-    private String cookies;
-    private String money;
-    private int exchange;
 
     @Override
     public boolean called(String[] args, MessageReceivedEvent event) {
@@ -34,9 +30,9 @@ public class commandShop implements Command {
         message.delete().queue();
 
 
-            this.points = MySQL.getValue(author, "points");
-            this.cookies = MySQL.getValue(author, "cookies");
-            this.money = MySQL.getValue(author, "money");
+        String points = MySQL.getValue(author, "points");
+        String cookies = MySQL.getValue(author, "cookies");
+        String money = MySQL.getValue(author, "money");
 
 
 
@@ -67,7 +63,7 @@ public class commandShop implements Command {
                 case "exchange":
                     if(args.length > 1){
                         try{
-                            exchange = Integer.parseInt(args[1]);
+                            int exchange = Integer.parseInt(args[1]);
                             if(exchange > Integer.parseInt(cookies)){
                                 EmbedSender.sendEmbed(":warning: You don't have enough cookies", channel, Color.red);
                                 return;

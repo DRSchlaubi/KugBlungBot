@@ -10,14 +10,11 @@ import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 import java.awt.*;
-import java.io.*;
 import java.util.HashMap;
-import java.util.Properties;
 
 public class commandCookie implements Command{
-    private String cookies;
 
-    public static HashMap<String, Integer> users = new HashMap<>();
+    private static HashMap<String, Integer> users = new HashMap<>();
 
     @Override
     public boolean called(String[] args, MessageReceivedEvent event) {
@@ -61,8 +58,7 @@ public class commandCookie implements Command{
             }
 
 
-
-            this.cookies = MySQL.getValue(user, "cookies");
+            String cookies = MySQL.getValue(user, "cookies");
 
 
 

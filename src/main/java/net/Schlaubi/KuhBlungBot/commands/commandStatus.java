@@ -35,8 +35,8 @@ public class commandStatus implements Command{
             return;
         }
 
-        for (int i = 0; i < args.length; i++){
-            input += args[i] + " ";
+        for (String arg : args) {
+            input += arg + " ";
         }
 
         MySQL.updateValue(author, "status", input.replaceFirst("null", ""));

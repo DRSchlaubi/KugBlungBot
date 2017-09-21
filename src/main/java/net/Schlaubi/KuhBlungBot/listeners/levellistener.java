@@ -13,7 +13,6 @@ import java.util.*;
 
 public class levellistener extends ListenerAdapter {
 
-    private String points;
     private ArrayList<String> cooldowned = new ArrayList<>();
     private String level;
     private String money;
@@ -30,7 +29,7 @@ public class levellistener extends ListenerAdapter {
 
                 this.money = MySQL.getValue(author, "money");
                 this.cookies = MySQL.getValue(author, "cookies");
-                this.points = MySQL.getValue(author, "points");
+                String points = MySQL.getValue(author, "points");
 
 
 

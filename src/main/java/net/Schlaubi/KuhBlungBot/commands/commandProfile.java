@@ -15,7 +15,7 @@ public class commandProfile implements Command {
     private String points;
     private String status;
     private String cookies;
-    String level;
+    private String level;
     private User user;
     private String money;
 

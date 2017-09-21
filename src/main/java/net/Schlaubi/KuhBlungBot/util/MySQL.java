@@ -7,17 +7,17 @@ import java.sql.*;
 
 public class MySQL {
 
-    private static String host = STATIC.HOST;
-    private static String port = STATIC.PORT;
-    private static String database = STATIC.DATABASE;
-    private static String username = STATIC.USERNAME;
     private static String password = SECRETS.password;
     private static Connection connection;
 
     public static void connect(){
         if(!isConnected()){
             try {
-                connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database , username, password);
+                String host = STATIC.HOST;
+                String port = STATIC.PORT;
+                String database = STATIC.DATABASE;
+                String username = STATIC.USERNAME;
+                connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database, username, password);
                 System.out.println("[KuhBlungBot] MySQL connected");
             } catch (SQLException e) {
                 System.out.println("[KuhBlungBot] MySQL connection failed");
@@ -26,7 +26,7 @@ public class MySQL {
         }
 
     }
-    public static boolean isConnected(){
+    private static boolean isConnected(){
 
         return (connection != null);
 
