@@ -1,22 +1,19 @@
 package net.Schlaubi.KuhBlungBot.commands;
 
-import net.Schlaubi.KuhBlungBot.util.STATIC;
+import net.Schlaubi.KuhBlungBot.util.MySQL;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
-
 import java.awt.*;
-import java.io.*;
-import java.util.Properties;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class commandProfile implements Command {
 
     private String points;
-    private String textbox;
+    private String status;
     private String cookies;
     String level;
     private User user;
@@ -42,65 +39,21 @@ public class commandProfile implements Command {
             user = event.getAuthor();
         }
 
-        File profile = new File("PROFILES/" + user.getId() + "/profile.properties");
-        File path = new File("PROFILES/" + user.getId() + "/");
 
-        if(!path.exists()){
-            path.mkdirs();
+        if(!MySQL.isUserExsists(user)){
+            MySQL.createUser(user);
         }
 
-        if(!profile.exists()) {
-            try {
-                profile.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        Properties properties = new Properties();
-        try {
-            BufferedInputStream bis = new BufferedInputStream(new FileInputStream( profile));
-            properties.load(bis);
-            this.points = properties.getProperty("points");
-            this.textbox = properties.getProperty("textbox");
-            this.cookies = properties.getProperty("cookies");
-            this.level = properties.getProperty("level");
-            this.money = properties.getProperty("money");
-
-            if(points == null){
-                this.points = "0";
-                properties.setProperty("points", "0");
-                properties.store(new FileOutputStream(profile), null);
-            }
-
-
-            if(textbox == null){
-                this.textbox = STATIC.INFO;
-                properties.setProperty("textbox", STATIC.INFO);
-                properties.store(new FileOutputStream(profile), null);
-            }
-
-            if(cookies == null){
-                this.cookies = "0";
-                properties.setProperty("cookies", "0");
-                properties.store(new FileOutputStream(profile), null);
-            }
-
-            if(level == null){
-                this.level = "1";
-                properties.setProperty("level", "1");
-                properties.store(new FileOutputStream(profile), null);
-            }
-            if(money == null){
-                this.money = "0";
-                properties.setProperty("money", "0");
-                properties.store(new FileOutputStream(profile), null);
-            }
+        this.level = MySQL.getValue(user, "level");
+        this.points = MySQL.getValue(user, "points");
+        this.money = MySQL.getValue(user, "money");
+        this.cookies = MySQL.getValue(user, "cookies");
+        this.status = MySQL.getValue(user, "status");
 
             new Timer().schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    int nextLevel = Integer.parseInt(level) +1;
+                     int nextLevel = Integer.parseInt(level) +1;
                     EmbedBuilder embed = new EmbedBuilder()
                             .setColor(Color.cyan)
                             .setThumbnail(user.getAvatarUrl())
@@ -110,16 +63,14 @@ public class commandProfile implements Command {
                             .addField(":small_blue_diamond: Points:" , "`" + points + "`", true)
                             .addField(":large_blue_diamond: Level", "`" + level + "`", true)
                             .addField(":large_blue_diamond: Next level", "`" + points + "/" + nextLevel * 100 * 2 +"`", true)
-                            .addField(":pager: Status", textbox, false)
+                            .addField(":pager: Status", status, false)
                             .addField("Social Media: ", "SOON", false)
-                            .addField(":computer:  Profile url:", "http://kuhblung.schlb.pw/" + author.getId() + " (soon)", false);
+                            .addField(":computer:  Profile url:", "http://kuhblung.schlb.pw/" + author.getId() + " (BETA)", false);
                     channel.sendMessage(embed.build()).queue();
                 }
             }, 1000);
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
 
 
     }

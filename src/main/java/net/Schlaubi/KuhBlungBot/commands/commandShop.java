@@ -1,6 +1,7 @@
 package net.Schlaubi.KuhBlungBot.commands;
 
 import net.Schlaubi.KuhBlungBot.util.EmbedSender;
+import net.Schlaubi.KuhBlungBot.util.MySQL;
 import net.Schlaubi.KuhBlungBot.util.STATIC;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
@@ -11,8 +12,6 @@ import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.managers.GuildController;
 
 import java.awt.*;
-import java.io.*;
-import java.util.Properties;
 
 public class commandShop implements Command {
     private String points;
@@ -34,47 +33,12 @@ public class commandShop implements Command {
         channel.sendTyping().queue();
         message.delete().queue();
 
-        File profile = new File("PROFILES/" + author.getId() + "/profile.properties");
-        File path = new File("PROFILES/" + author.getId() + "/");
 
-        if(!path.exists()){
-            path.mkdirs();
-        }
-
-        if(!profile.exists()) {
-            try {
-                profile.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        Properties properties = new Properties();
-        try {
-            BufferedInputStream bis = new BufferedInputStream(new FileInputStream(profile));
-            properties.load(bis);
-            this.points = properties.getProperty("points");
-            this.cookies = properties.getProperty("cookies");
-            this.money = properties.getProperty("money");
-
-            if (points == null) {
-                this.points = "0";
-                properties.setProperty("points", "0");
-                properties.store(new FileOutputStream(profile), null);
-            }
+            this.points = MySQL.getValue(author, "points");
+            this.cookies = MySQL.getValue(author, "cookies");
+            this.money = MySQL.getValue(author, "money");
 
 
-            if (cookies == null) {
-                this.cookies = "0";
-                properties.setProperty("cookies", "0");
-                properties.store(new FileOutputStream(profile), null);
-            }
-
-            if(money == null){
-                this.money = "0";
-                properties.setProperty("money", "0");
-                properties.store(new FileOutputStream(profile), null);
-            }
 
             if (!(args.length > 0)) {
                 EmbedBuilder embed = new EmbedBuilder()
@@ -89,8 +53,8 @@ public class commandShop implements Command {
                         .addField("**Products: **", "", false)
                         .addField(":money_with_wings: Money: ", "10 Cookies = 1 $ `" + STATIC.PREFIX + "shop exchange <amount of cookies>`", false)
                         .addField("Pink color role: ",  "Price: 10$ `" + STATIC.PREFIX + "shop buy pinkcolor`", false)
-                        .addField("Stammspieler role: ",  "Price: 20$ `" + STATIC.PREFIX + "shop buy stammspieler`", false)
-                        .addField("OG: ",  "Price: 50$ `" + STATIC.PREFIX + "shop buy og`", false);
+                        .addField("Stammspieler role: ",  "Price: 50$ `" + STATIC.PREFIX + "shop buy stammspieler`", false)
+                        .addField("OG: ",  "Price: 100$ `" + STATIC.PREFIX + "shop buy og`", false);
 
 
 
@@ -109,9 +73,8 @@ public class commandShop implements Command {
                                 return;
 
                             }
-                            properties.setProperty("money", String.valueOf(Integer.parseInt(money) + (exchange / 10)));
-                            properties.setProperty("cookies", String.valueOf(Integer.parseInt(cookies) - exchange));
-                            properties.store(new FileOutputStream(profile), null);
+                            MySQL.updateValue(author, "money" , String.valueOf(Integer.parseInt(money) + (exchange / 10)));
+                            MySQL.updateValue(author, "cookies", String.valueOf(Integer.parseInt(cookies) - exchange));
                             EmbedSender.sendEmbed(":white_check_mark:  You successfully bought `" + exchange /10 + "`$ Thank you!", channel, Color.green);
                         } catch (NumberFormatException e){
                             EmbedSender.sendEmbed(":warning:: Please provide a valid number", channel, Color.red);
@@ -121,13 +84,12 @@ public class commandShop implements Command {
                     }
                     break;
                 case "buy":
-                    switch (args[1]){
+                    switch (args[1].toLowerCase()){
                         case "pinkcolor":
-                            if(Integer.parseInt(points) >= 10){
+                            if(Integer.parseInt(money) >= 10){
                                 Role pinkcolor = event.getGuild().getRoleById("352157314926641152");
                                 if(!event.getMember().getRoles().contains(pinkcolor)) {
-                                    properties.setProperty("money", String.valueOf(Integer.parseInt(points) - 10));
-                                    properties.store(new FileOutputStream(profile), null);
+                                    MySQL.updateValue(author, "money", String.valueOf(Integer.parseInt(money) - 10));
                                     gcon.addRolesToMember(event.getMember(), pinkcolor).queue();
                                     EmbedSender.sendEmbed(":white_check_mark: You successfully bought `1x pink color (10$)`! Thank you!", channel, Color.green);
                                 } else {
@@ -138,13 +100,12 @@ public class commandShop implements Command {
                             }
                             break;
                         case "stammspieler":
-                            if(Integer.parseInt(points) >= 20){
+                            if(Integer.parseInt(money) >= 50){
                                 Role stammspieler = event.getGuild().getRoleById("352830292777762816");
                                 if(!event.getMember().getRoles().contains(stammspieler)) {
-                                    properties.setProperty("money", String.valueOf(Integer.parseInt(points) - 20));
-                                    properties.store(new FileOutputStream(profile), null);
+                                    MySQL.updateValue(author, "money", String.valueOf(Integer.parseInt(money) - 50));
                                     gcon.addRolesToMember(event.getMember(), stammspieler).queue();
-                                    EmbedSender.sendEmbed(":white_check_mark: You successfully bought `1x stammspieler (20$)`! Thank you!", channel, Color.green);
+                                    EmbedSender.sendEmbed(":white_check_mark: You successfully bought `1x stammspieler (50$)`! Thank you!", channel, Color.green);
                                 } else {
                                     EmbedSender.sendEmbed("You have already bought that product", channel, Color.red);
                                 }
@@ -153,13 +114,12 @@ public class commandShop implements Command {
                             }
                             break;
                         case "og":
-                            if(Integer.parseInt(points) >= 50){
+                            if(Integer.parseInt(money) >= 1000){
                                 Role og = event.getGuild().getRoleById("356117876761034752");
                                 if(!event.getMember().getRoles().contains(og)) {
-                                    properties.setProperty("money", String.valueOf(Integer.parseInt(points) - 50));
-                                    properties.store(new FileOutputStream(profile), null);
+                                    MySQL.updateValue(author, "money", String.valueOf(Integer.parseInt(money) - 1000));
                                     gcon.addRolesToMember(event.getMember(), og).queue();
-                                    EmbedSender.sendEmbed(":white_check_mark: You successfully bought `1x OG role (20$)`! Thank you!", channel, Color.green);
+                                    EmbedSender.sendEmbed(":white_check_mark: You successfully bought `1x OG role (1000$)`! Thank you!", channel, Color.green);
                                 } else {
                                     EmbedSender.sendEmbed("You have already bought that product", channel, Color.red);
                                 }
@@ -177,9 +137,7 @@ public class commandShop implements Command {
                     break;
             }
 
-        } catch (IOException e){
-            e.printStackTrace();
-        }
+
 
 
     }
