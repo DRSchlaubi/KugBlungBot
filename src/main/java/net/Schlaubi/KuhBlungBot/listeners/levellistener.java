@@ -53,8 +53,6 @@ public class levellistener extends ListenerAdapter {
                             int random = gen.nextInt(50);
                             int moneyreward = nextlevel * random;
                             int cookiereward = nextlevel + random;
-                            MySQL.updateValue(author, "money", String.valueOf(Integer.parseInt(money) + moneyreward));
-                            MySQL.updateValue(author, "cookies", String.valueOf(Integer.parseInt(cookies) + cookiereward));
                             PrivateChannel prich = author.openPrivateChannel().complete();
 
 
@@ -62,6 +60,8 @@ public class levellistener extends ListenerAdapter {
                                 MySQL.updateValue(author, "level", String.valueOf(nextlevel));
 
 
+                                MySQL.updateValue(author, "money", String.valueOf(Integer.parseInt(money) + moneyreward));
+                                MySQL.updateValue(author, "cookies", String.valueOf(Integer.parseInt(cookies) + cookiereward));
 
                                 EmbedSender.sendPermanentEmbed("Congratulations you have spamed enough to get level `" + nextlevel + "`  ", prich, Color.cyan);
                                 EmbedSender.sendPermanentEmbed("Rewards: \n :cookie: +" + cookiereward + " Cookies \n  :money_mouth: Money + " + moneyreward + " $", prich, Color.cyan);
