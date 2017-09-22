@@ -5,8 +5,8 @@ import net.Schlaubi.KuhBlungBot.commands.*;
 import net.Schlaubi.KuhBlungBot.listeners.CommandListener;
 import net.Schlaubi.KuhBlungBot.listeners.GuildMemberJoinListener;
 import net.Schlaubi.KuhBlungBot.listeners.levellistener;
+import net.Schlaubi.KuhBlungBot.setup.Configuration;
 import net.Schlaubi.KuhBlungBot.util.MySQL;
-import net.Schlaubi.KuhBlungBot.util.SECRETS;
 import net.Schlaubi.KuhBlungBot.util.STATIC;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDABuilder;
@@ -18,11 +18,13 @@ import javax.security.auth.login.LoginException;
 
 public class Main {
 
+    public static final Configuration SECRETS = new Configuration("secrets.json");
+
     public static void main(String[] Args){
         System.out.println("[KuhBlungBot] Starting ...");
         connectMySQL();
         JDABuilder builder = new JDABuilder(AccountType.BOT);
-        builder.setToken(SECRETS.token);
+        builder.setToken((String) SECRETS.getValue("token"));
         builder.setStatus(OnlineStatus.DO_NOT_DISTURB);
         builder.setGame(Game.of(STATIC.GAME));
         builder.addEventListener(new CommandListener());
