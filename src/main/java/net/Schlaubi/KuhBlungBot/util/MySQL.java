@@ -51,7 +51,7 @@ public class MySQL {
 
     public static void createUser(User user){
         try {
-            PreparedStatement ps = connection.prepareStatement("INSERT INTO `kuhblung`(`discordid`, `level`, `points`, `money`, `cookies`, `status`,`netdex`,`twitter`,`reddit`,`steam`,`twitch`,`twitter`) VALUES (?, '1', '0', '0', '0', 'Hey, I am using Discord','0','0','0','0','0','0')");
+            PreparedStatement ps = connection.prepareStatement("INSERT INTO `kuhblung`(`discordid`, `level`, `points`, `money`, `cookies`, `status`,`netdex`,`twitter`,`reddit`,`steam`,`twitch`) VALUES (?, '1', '0', '0', '0', 'Hey, I am using Discord','0','0','0','0','0')");
             ps.setString(1, user.getId());
             ps.execute();
         } catch (SQLException e) {
