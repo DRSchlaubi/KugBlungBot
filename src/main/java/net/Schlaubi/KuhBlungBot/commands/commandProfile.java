@@ -64,8 +64,23 @@ public class commandProfile implements Command {
                             .addField(":large_blue_diamond: Level", "`" + level + "`", true)
                             .addField(":large_blue_diamond: Next level", "`" + points + "/" + nextLevel * 100 * 2 +"`", true)
                             .addField(":pager: Status", status, false)
-                            .addField("Social Media: ", "SOON", false)
-                            .addField(":computer:  Profile url:", "http://kuhblung.schlb.pw/" + author.getId() + " (BETA)", false);
+                            .addField("Social Media: ", "", false);
+                    if(!MySQL.getValue(user, "netdex").equals("0")){
+                        embed.addField("<:netdex:360033528680808450> Netdex:", "http://netdex.co/" + MySQL.getValue(user, "netdex"), false);
+                    }
+                    if(!MySQL.getValue(user, "twitter").equals("0")){
+                        embed.addField("<:twitter:360034158984298496> Twitter:", "http://twitter.com/" + MySQL.getValue(user, "twitter"), false);
+                    }
+                    if(!MySQL.getValue(user, "reddit").equals("0")){
+                        embed.addField("<:reddit:361125527844814858> Reddit:", "http://reddit.com/u/" + MySQL.getValue(user, "reddit"), false);
+                    }
+                    if(!MySQL.getValue(user, "steam").equals("0")){
+                        embed.addField("<:steam:361125793948237825> Steam:", MySQL.getValue(user, "steam"), false);
+                    }
+                    if(!MySQL.getValue(user, "twitch").equals("0")){
+                        embed.addField("<:twitch:361125953184989185> Twitch:", "http://twitch.tv/" + MySQL.getValue(user, "twitch"), false);
+                    }
+                    embed.addField(":computer:  Profile url:", "http://kuhblung.schlb.pw/" + author.getId() + " (BETA)", false);
                     channel.sendMessage(embed.build()).queue();
                 }
             }, 1000);
