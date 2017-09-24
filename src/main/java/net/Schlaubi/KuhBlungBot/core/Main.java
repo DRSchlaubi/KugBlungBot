@@ -15,6 +15,10 @@ import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
 
 import javax.security.auth.login.LoginException;
+import java.util.Calendar;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
 
@@ -33,6 +37,7 @@ public class Main {
         CommandHandler.commands.put("status", new commandStatus());
         CommandHandler.commands.put("cookie", new commandCookie());
         CommandHandler.commands.put("shop", new commandShop());
+        resetCooldown();
 
 
         try {
@@ -42,6 +47,20 @@ public class Main {
         }
         System.out.println("[KuhBlungBot] Bot started");
 
+
+    }
+
+    private static void resetCooldown() {
+            Calendar today = Calendar.getInstance();
+            today.set(Calendar.HOUR_OF_DAY, 0);
+            today.set(Calendar.MINUTE, 0);
+            today.set(Calendar.SECOND, 0);
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    commandCookie.users.clear();
+                }
+            }, today.getTime(), TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS));
 
     }
 

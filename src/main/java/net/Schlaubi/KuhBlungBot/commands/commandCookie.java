@@ -14,7 +14,7 @@ import java.util.HashMap;
 
 public class commandCookie implements Command{
 
-    private static HashMap<String, Integer> users = new HashMap<>();
+    public static HashMap<String, Integer> users = new HashMap<>();
 
     @Override
     public boolean called(String[] args, MessageReceivedEvent event) {
