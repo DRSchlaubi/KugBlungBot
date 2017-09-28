@@ -34,8 +34,10 @@ public class levellistener extends ListenerAdapter {
 
 
 
-                    Random gen = new Random();
-                    int random = gen.nextInt(50);
+                    Random r = new Random();
+                    int Low = 10;
+                    int High = 100;
+                    int random = r.nextInt(High-Low) + Low;
                     int moneyreward = Integer.parseInt(money) * random;
 
                     MySQL.updateValue(author, "points", String.valueOf(Integer.parseInt(points) + random));
@@ -47,23 +49,24 @@ public class levellistener extends ListenerAdapter {
                     new Timer().schedule(new TimerTask() {
                         @Override
                         public void run() {
-                            int nextlevel = Integer.parseInt(level) + 1;
+                            int nextLevel = Integer.parseInt(level) + 1;
                             int actualpoints = Integer.parseInt(MySQL.getValue(author, "points"));
                             Random gen = new Random();
                             int random = gen.nextInt(50);
-                            int moneyreward = nextlevel * random;
-                            int cookiereward = nextlevel + random;
+                            int moneyreward = nextLevel * random;
+                            int cookiereward = nextLevel + random;
+                            int nextLevelPoints = 5*(nextLevel^2)+50*nextLevel+100;
                             PrivateChannel prich = author.openPrivateChannel().complete();
 
 
-                            if(actualpoints >= nextlevel * 100 * 2){
-                                MySQL.updateValue(author, "level", String.valueOf(nextlevel));
+                            if(actualpoints >= nextLevelPoints){
+                                MySQL.updateValue(author, "level", String.valueOf(nextLevel));
 
 
                                 MySQL.updateValue(author, "money", String.valueOf(Integer.parseInt(money) + moneyreward));
                                 MySQL.updateValue(author, "cookies", String.valueOf(Integer.parseInt(cookies) + cookiereward));
 
-                                EmbedSender.sendPermanentEmbed("Congratulations you have spamed enough to get level `" + nextlevel + "`  ", prich, Color.cyan);
+                                EmbedSender.sendPermanentEmbed("Congratulations you have spamed enough to get level `" + nextLevel + "`  ", prich, Color.cyan);
                                 EmbedSender.sendPermanentEmbed("Rewards: \n :cookie: +" + cookiereward + " Cookies \n  :money_mouth: Money + " + moneyreward + " $", prich, Color.cyan);
                             }
 
