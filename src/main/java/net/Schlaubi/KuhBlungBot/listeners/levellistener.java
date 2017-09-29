@@ -52,10 +52,11 @@ public class levellistener extends ListenerAdapter {
                             int nextLevel = Integer.parseInt(level) + 1;
                             int actualpoints = Integer.parseInt(MySQL.getValue(author, "points"));
                             Random gen = new Random();
-                            int random = gen.nextInt(50);
+                            int random = gen.nextInt(10);
                             int moneyreward = nextLevel * random;
                             int cookiereward = nextLevel + random;
-                            int nextLevelPoints = 5*(nextLevel^2)+50*nextLevel+100;
+                            int levelint = Integer.parseInt(level);
+                            long nextLevelPoints = 5 * (((long) Math.pow(levelint, 2)) + 10 * levelint + 20);
                             PrivateChannel prich = author.openPrivateChannel().complete();
 
 
