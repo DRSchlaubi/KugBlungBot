@@ -1,13 +1,14 @@
 package net.Schlaubi.KuhBlungBot.util;
 
 
+import net.Schlaubi.KuhBlungBot.core.Main;
 import net.dv8tion.jda.core.entities.User;
 
 import java.sql.*;
 
 public class MySQL {
 
-    private static String password = SECRETS.password;
+    private static String password = (String) Main.SECRETS.getValue("db_passs");
     private static Connection connection;
 
     public static void connect(){
