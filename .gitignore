@@ -3,3 +3,5 @@
 /src/main/resources/
 /.idea/
 /PROFILES/
+/dependency-reduced-pom.xml
+/target/
