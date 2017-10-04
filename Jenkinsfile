@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        withMaven(maven: 'M3')
+        withMaven(maven: 'M3', jdk: 'jdk8')
       }
     }
   }
