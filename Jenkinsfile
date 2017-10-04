@@ -14,12 +14,10 @@ pipeline {
       }
     }
     stage('Build') {
-      steps {
-        if (isUnix()) {
-          sh "'${M2_HOME}/bin/mvn' -Dmaven.test.failure.ignore clean package"
-        } else {
-          bat(/"${M2_HOME}\bin\mvn" -Dmaven.test.failure.ignore clean package/)
-        }
+      if (isUnix()) {
+        sh "'${M2_HOME}/bin/mvn' -Dmaven.test.failure.ignore clean package"
+      } else {
+        bat(/"${M2_HOME}\bin\mvn" -Dmaven.test.failure.ignore clean package/)
       }
     }
   }
