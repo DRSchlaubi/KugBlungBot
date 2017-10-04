@@ -16,5 +16,10 @@ pipeline {
         sh "${M2_HOME}/bin/mvn -Dmaven.test.failure.ignore clean package"
       }
     }
+    stage('Results') {
+      steps {
+        archive 'target/*.jar'
+      }
+    }
   }
 }
