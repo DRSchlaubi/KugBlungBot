@@ -18,4 +18,7 @@ node {
    //   junit '**/target/surefire-reports/TEST-*.xml'
    //   archive 'target/*.jar'
    //}
+   stage('Archive Artifacts') {
+      archive 'target/*.jar'
+   }
 }
