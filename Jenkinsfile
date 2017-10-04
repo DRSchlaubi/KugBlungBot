@@ -12,7 +12,9 @@ pipeline {
       }
     }
     stage('Build') {
-       sh "${M2_HOME}/bin/mvn -Dmaven.test.failure.ignore clean package"
+      steps{
+        sh "${M2_HOME}/bin/mvn -Dmaven.test.failure.ignore clean package"
+      }
     }
   }
 }
