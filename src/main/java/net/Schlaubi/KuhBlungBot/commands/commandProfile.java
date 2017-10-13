@@ -53,8 +53,9 @@ public class commandProfile implements Command {
             new Timer().schedule(new TimerTask() {
                 @Override
                 public void run() {
+                    int levelint = Integer.parseInt(level);
                     int nextLevel = Integer.parseInt(level) +1;
-                    int nextLevelPoints = 5*(nextLevel^2)+50*nextLevel+100;
+                    int nextLevelPoints = 5*(levelint ^2)+50*levelint+100;
                     EmbedBuilder embed = new EmbedBuilder()
                             .setColor(Color.cyan)
                             .setThumbnail(user.getAvatarUrl())

@@ -37,7 +37,8 @@ public class MySQL {
     }
 
     public static boolean isUserExsists(User user){
-
+        if(!isConnected())
+            connect();
         try {
             PreparedStatement ps = connection.prepareStatement("SELECT * FROM kuhblung WHERE discordid = ?");
             ps.setString(1, user.getId());
@@ -50,6 +51,8 @@ public class MySQL {
     }
 
     public static void createUser(User user){
+        if(!isConnected())
+            connect();
         try {
             PreparedStatement ps = connection.prepareStatement("INSERT INTO `kuhblung`(`discordid`, `level`, `points`, `money`, `cookies`, `status`,`netdex`,`twitter`,`reddit`,`steam`,`twitch`) VALUES (?, '1', '0', '0', '0', 'Hey, I am using Discord','0','0','0','0','0')");
             ps.setString(1, user.getId());
@@ -60,7 +63,8 @@ public class MySQL {
     }
 
     public static void updateValue(User user, String type, String value){
-
+        if(!isConnected())
+            connect();
         try {
             PreparedStatement ps = connection.prepareStatement("UPDATE kuhblung SET " + type + " = '" + value +"' WHERE `discordid` = " + user.getId());
             ps.execute();
@@ -72,6 +76,8 @@ public class MySQL {
     }
 
     public static String getValue(User user, String type){
+        if(!isConnected())
+            connect();
         try {
             PreparedStatement ps = connection.prepareStatement("SELECT * FROM kuhblung WHERE `discordid` = ?");
             ps.setString(1, user.getId());

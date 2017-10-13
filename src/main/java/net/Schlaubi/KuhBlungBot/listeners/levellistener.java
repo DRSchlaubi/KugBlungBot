@@ -10,6 +10,7 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 import java.awt.*;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class levellistener extends ListenerAdapter {
 
@@ -24,11 +25,13 @@ public class levellistener extends ListenerAdapter {
         String msg = event.getMessage().getContent();
         User author = event.getAuthor();
         if(!author.isBot()) {
-
+            if(!MySQL.isUserExsists(author))
+                MySQL.createUser(author);
             if (!msg.startsWith("-") && !msg.startsWith(".") && !msg.startsWith("::") && !msg.startsWith("!!") && !cooldowned.contains(author.getId())) {
 
                 this.money = MySQL.getValue(author, "money");
                 this.cookies = MySQL.getValue(author, "cookies");
+                this.level = MySQL.getValue(author, "level");
                 String points = MySQL.getValue(author, "points");
 
 
@@ -37,26 +40,25 @@ public class levellistener extends ListenerAdapter {
                     Random r = new Random();
                     int Low = 10;
                     int High = 100;
-                    int random = r.nextInt(High-Low) + Low;
+                    int random = ThreadLocalRandom.current().nextInt(15, 25 +1);
                     int moneyreward = Integer.parseInt(money) * random;
 
                     MySQL.updateValue(author, "points", String.valueOf(Integer.parseInt(points) + random));
 
                     cooldowned.add(author.getId());
 
-                    this.level = MySQL.getValue(author, "level");
+
 
                     new Timer().schedule(new TimerTask() {
                         @Override
                         public void run() {
                             int nextLevel = Integer.parseInt(level) + 1;
                             int actualpoints = Integer.parseInt(MySQL.getValue(author, "points"));
-                            Random gen = new Random();
-                            int random = gen.nextInt(10);
+                            int random = ThreadLocalRandom.current().nextInt(15,25 + 1);
                             int moneyreward = nextLevel * random;
                             int cookiereward = nextLevel + random;
                             int levelint = Integer.parseInt(level);
-                            long nextLevelPoints = 5 * (((long) Math.pow(levelint, 2)) + 10 * levelint + 20);
+                            int nextLevelPoints = 2000000;
                             PrivateChannel prich = author.openPrivateChannel().complete();
 
 
